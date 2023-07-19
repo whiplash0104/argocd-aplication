@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-argocd-ing
+  namespace: app-argocd
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - secretName: tls-secret
+  rules:
+  - http:
+      paths:
+        - path: /app-argocd
+          pathType: Prefix
+          backend:
+            service:
+              name: app-argocd-svc
+              port:
+                number: 8088
